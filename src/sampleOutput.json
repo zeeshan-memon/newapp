@@ -1,8 +1,7 @@
-import React, { Component } from 'react'
-import NewsItem from './NewsItem'
-
-export class News extends Component {
-     articles = [
+{
+    "status": "ok",
+    "totalResults": 38,
+    "articles": [
         {
             "source": {
                 "id": null,
@@ -90,7 +89,7 @@ export class News extends Component {
             "title": "Jimmy Kimmel Drags Ted Cruz to Hell for Feuding With Big Bird Over the COVID Vaccine - The Daily Beast",
             "description": "“It’s interesting because not only is Ted Cruz vaccinated himself, Ted Cruz was born with an immunity that protects him from contracting any friends,” joked Kimmel.",
             "url": "https://www.thedailybeast.com/jimmy-kimmel-brutally-mocks-ted-cruz-for-feuding-with-big-bird-over-the-covid-vaccine",
-            "urlToImage": null,
+            "urlToImage": "https://img.thedailybeast.com/image/upload/c_crop,d_placeholder_euli9k,h_1360,w_2418,x_0,y_42/dpr_2.0/c_limit,w_740/fl_lossy,q_auto/v1636432164/Screen_Shot_2021-11-08_at_11.15.27_PM_enu8wx",
             "publishedAt": "2021-11-09T05:30:09Z",
             "content": "On Monday night, Jimmy Kimmel gleefully took aim at one of his favorite targets, Ted Cruz, the Republican senator from Texas who bent the knee to Donald Trump after he accused Cruzs father of killing… [+1669 chars]"
         },
@@ -263,66 +262,5 @@ export class News extends Component {
             "publishedAt": "2021-11-09T00:55:39Z",
             "content": "A Florida high school student was found safe after she went missing during a school field trip in Georgia, officials announced Monday. Police said they located 16-year-old Mia Brailford at an Alabama… [+1208 chars]"
         }
-    ];
-    constructor(){
-        super();
-        console.log("Hello I am a constructor from news component");
-        this.state = {
-            articles: this.articles,
-            loading:true,
-            page:3
-        }
-    }
-    
-    handlePrevClick = async()=>{
-        console.log("handlePrevClick");
-        let url =`https://newsapi.org/v2/top-headlines?country=in&category=business&apiKey=ba327cfdf2e44bd296a8c5fb9ca602f5&page=${this.state.page - 1}&pageSize=20`;
-        let data = await fetch(url);
-        let parseData = await data.json();
-        console.log(parseData);
-        this.setState({articles:parseData.articles, page: this.state.page - 1});
-    }
-    
-    handleNextClick = async()=>{
-        console.log("handleNextClick");
-        if(this.state.page + 1 > Math.ceil(this.state.totalResults/20)){
-
-        }else{
-        let url =`https://newsapi.org/v2/top-headlines?country=in&category=business&apiKey=ba327cfdf2e44bd296a8c5fb9ca602f5&page=${this.state.page + 1}&pageSize=20`;
-        let data = await fetch(url);
-        let parseData = await data.json();
-        console.log(parseData);
-        this.setState({articles:parseData.articles, page: this.state.page + 1});
-        }
-    }
-     async  componentDidMount(){
-        let url =`https://newsapi.org/v2/top-headlines?country=in&category=business&apiKey=ba327cfdf2e44bd296a8c5fb9ca602f5&page=${this.state.page}&pageSize=20`;
-        let data = await fetch(url);
-        let parseData = await data.json();
-        console.log(parseData);
-        this.setState({articles:parseData.articles, totalResults:parseData.totalResults});
-    }
-
-    render() {
-        return (
-            <div className="container my-3">
-                <h1>NewMonkey - Top Headline</h1>
-                <div className="row my-3"> 
-                    {this.state.articles.map((element)=>{
-                       return <div className="col-md-4 row my-3" key={element.url}>
-                        {/* <NewsItem title={element.title?element.title.slice(0, 90):""} description={element.description?element.description.slice(0, 60):""} imageUrl={element.urlToImage} newUrl={element.url}/>       */}
-                        <NewsItem title={element.title?element.title:""} description={element.description?element.description:""} imageUrl={element.urlToImage} newUrl={element.url}/>      
-                        </div>
-                    })};
-                </div>
-                <div className="d-flex justify-content-between">
-                <button disabled={this.state.page <= 1} type="button" className="btn btn-dark" onClick={this.handlePrevClick} > &larr; Previous</button>
-                <button type="button" className="btn btn-dark" onClick={this.handleNextClick} >Next &rarr; </button>
-                </div>
-
-            </div>
-        )
-    }
+    ]
 }
-
-export default News
