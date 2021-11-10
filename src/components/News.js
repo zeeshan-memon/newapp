@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import NewsItem from './NewsItem'
 import Spinner from './Spinner';
+import PropTypes from 'prop-types'
 
 export class News extends Component {
      articles = [
@@ -265,6 +266,18 @@ export class News extends Component {
             "content": "A Florida high school student was found safe after she went missing during a school field trip in Georgia, officials announced Monday. Police said they located 16-year-old Mia Brailford at an Alabama… [+1208 chars]"
         }
     ];
+    static defautProps = {
+        country: 'in',
+        pageSize:5,
+        category:'general'
+    }
+
+    static propstypes = {
+        country: PropTypes.string,
+        pageSize: PropTypes.number,
+        category: PropTypes.string,
+    }
+
     constructor(){
         super();
         console.log("Hello I am a constructor from news component");
@@ -277,7 +290,7 @@ export class News extends Component {
     
     handlePrevClick = async()=>{
         console.log("handlePrevClick");
-        let url =`https://newsapi.org/v2/top-headlines?country=in&category=business&apiKey=ba327cfdf2e44bd296a8c5fb9ca602f5&page=${this.state.page - 1}&pageSize=${this.props.pageSize}`;
+        let url =`https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=ba327cfdf2e44bd296a8c5fb9ca602f5&page=${this.state.page - 1}&pageSize=${this.props.pageSize}`;
         this.setState({loading:true});
         let data = await fetch(url);
         let parseData = await data.json();
@@ -288,7 +301,7 @@ export class News extends Component {
     handleNextClick = async()=>{
         console.log("handleNextClick");
     
-        let url =`https://newsapi.org/v2/top-headlines?country=in&category=business&apiKey=ba327cfdf2e44bd296a8c5fb9ca602f5&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`;
+        let url =`https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=ba327cfdf2e44bd296a8c5fb9ca602f5&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`;
         this.setState({loading:true});
         let data = await fetch(url);
         let parseData = await data.json();
@@ -297,7 +310,7 @@ export class News extends Component {
         
     }
      async  componentDidMount(){
-        let url =`https://newsapi.org/v2/top-headlines?country=in&category=business&apiKey=ba327cfdf2e44bd296a8c5fb9ca602f5&page=${this.state.page}&pageSize=${this.props.pageSize}`;
+        let url =`https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=ba327cfdf2e44bd296a8c5fb9ca602f5&page=${this.state.page}&pageSize=${this.props.pageSize}`;
         this.setState({loading:true});
         let data = await fetch(url);
         let parseData = await data.json();
@@ -314,9 +327,9 @@ export class News extends Component {
                     {!this.state.loading && this.state.articles.map((element)=>{
                        return <div className="col-md-4 row my-3" key={element.url}>
                         {/* <NewsItem title={element.title?element.title.slice(0, 90):""} description={element.description?element.description.slice(0, 60):""} imageUrl={element.urlToImage} newUrl={element.url}/>       */}
-                        <NewsItem title={element.title?element.title:""} description={element.description?element.description:""} imageUrl={element.urlToImage} newUrl={element.url}/>      
+                        <NewsItem title={element.title?element.title:""} description={element.description?element.description:""} imageUrl={element.urlToImage} newUrl={element.url} author={element.author?element.author:"Unknow"} date={element.publishedAt} source={element.source.name}/>      
                         </div>
-                    })};
+                    })}
                 </div>
                 <div className="d-flex justify-content-between">
                 <button disabled={this.state.page <= 1} type="button" className="btn btn-dark" onClick={this.handlePrevClick} > &larr; Previous</button>
