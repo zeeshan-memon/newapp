@@ -19,21 +19,22 @@ const News =(props)=> {
     // )} - NewsMonkey`;
 
   const updateNews = async () => {
-    props.setProgress(20);
+    props.showProgress(20);
     let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=98c5fbfc0baa4d9e9bf1b05341d977ea&page=${page}&pageSize=${props.pageSize}`;
     setLoading(true);
     let data = await fetch(url);
-    props.setProgress(40);
+    props.showProgress(40);
     let parseData = await data.json();
-    props.setProgress(70);
+    props.showProgress(70);
     console.log(parseData);
     setArticles(parseData.articles);
     setTotalResults(parseData.totalResults);
     setLoading(false);
-    props.setProgress(100);
+    props.showProgress(100);
   };
   useEffect(() => {
     updateNews();
+      document.title = `${capitalizeFirstLetter(props.category)} - NewsMonkey`;
   }, [])
   //   handlePrevClick = async () => {
   //     this.setState({ page: this.state.page - 1 });
@@ -49,9 +50,9 @@ const News =(props)=> {
   // }
 
    const fetchMoreData = async () => {
-    setPage(page + 1);
-    let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=98c5fbfc0baa4d9e9bf1b05341d977ea&page=${page}&pageSize=${props.pageSize}`;
-    setLoading(true);
+     let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=98c5fbfc0baa4d9e9bf1b05341d977ea&page=${page +1}&pageSize=${props.pageSize}`;
+     setPage(page + 1);
+     setLoading(true);
     let data = await fetch(url);
     let parseData = await data.json();
     setArticles(articles.concat(parseData.articles));
@@ -61,7 +62,7 @@ const News =(props)=> {
 
     return (
       <>
-        <h2 className="text-center my-3">
+        <h2 className="text-center" style={{marginTop:'80px'}}>
           NewsMonkey - {capitalizeFirstLetter(props.category)} Top
           Headline
         </h2>
@@ -74,7 +75,7 @@ const News =(props)=> {
         >
           <div className="container">
             <div className="row justify-content-center">
-              {articles.map((element) => {
+              {articles.map((element,) => {
                 return (
                   <div className="col-md-4 row my-3" key={element.url}>
                     {/* <NewsItem title={element.title?element.title.slice(0, 90):""} description={element.description?element.description.slice(0, 60):""} imageUrl={element.urlToImage} newUrl={element.url}/>       */}
